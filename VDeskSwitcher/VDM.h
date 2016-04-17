@@ -4,6 +4,12 @@
 #include <objbase.h>
 #include <ObjectArray.h>
 
+#include "IVirtualDesktop.h"
+#include "IVirtualDesktopManager.h"
+#include "IVirtualDesktopNotification.h"
+#include "IVirtualDesktopNotificationService.h"
+
+#if 0
 const CLSID CLSID_ImmersiveShell = {
 	0xC2F03A33, 0x21F5, 0x47FA, 0xB4, 0xBB, 0x15, 0x63, 0x62, 0xA2, 0xF2, 0x39 };
 
@@ -48,6 +54,7 @@ enum AdjacentDesktop
 };
 
 // ???????? ??????????? ??????
+#endif
 
 EXTERN_C const IID IID_IVirtualDesktopManagerInternal;
 
@@ -99,6 +106,7 @@ public:
 		IVirtualDesktop **ppDesktop) = 0;
 };
 
+#if 0
 EXTERN_C const IID IID_IVirtualDesktopManager;
 
 MIDL_INTERFACE("a5cd92ff-29be-454c-8d04-d82879fb3f1b")
@@ -161,3 +169,6 @@ public:
 	virtual HRESULT STDMETHODCALLTYPE Unregister(
 		DWORD dwCookie) = 0;
 };
+#endif 
+
+HRESULT EnumVirtualDesktops(IVirtualDesktopManagerInternal *pDesktopManager, CArray<GUID> *pDesks);

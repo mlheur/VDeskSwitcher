@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "DesktopID.h"
 
 
 // CVDeskSwitcherDlg dialog
@@ -34,22 +35,32 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedEnabled();
 	afx_msg void OnBnClickedStartMinimized();
-	//afx_msg void OnMouseMove(UINT, CPoint);
-	afx_msg void OnMouseLeave();
 	afx_msg void ChangeDesktop(DWORD);
 	afx_msg void OnTimer(UINT_PTR);
+	afx_msg void OnBnClickedPintodesk();
+	afx_msg void OnBnClickedIdentify();
 
 private:
-	void StartTimer();
+	void StartTimer(DWORD=0);
+	void PrintDeskID(DWORD);
+	LPCTSTR Config = _T("Startup");
+	BOOL Enabled;
+	LPCTSTR kEnabled = _T("Enabled");
 	DWORD Delay;
+	LPCTSTR kDelay = _T("Delay");
+	BOOL StartMinimized;
+	LPCTSTR kStartMinimized = _T("StartMinimized");
+	BOOL PinToDesk;
+	LPCTSTR kPinToDesk = _T("PinToDesk");
+	BOOL Identify;
+	LPCTSTR kIdentify = _T("Identify");
+	UINT_PTR Timer;
+	POINT MousePos;
 	DWORD FirstHit;
 	DWORD EdgeHit;
-	BOOL StartMinimized;
-	BOOL Enabled;
-	POINT MousePos;
-	LPCTSTR Config = _T("Startup");
-	LPCTSTR kDelay = _T("Delay");
-	LPCTSTR kEnabled = _T("Enabled");
-	LPCTSTR kStartMinimized = _T("StartMinimized");
-	UINT_PTR Timer;
+	DesktopID *pDID;
+	BOOL FirstInit;
+	
+	NOTIFYICONDATA Tray; 
+	afx_msg LRESULT OnTray(WPARAM,LPARAM);
 };

@@ -45,6 +45,12 @@
     <ClInclude Include="IVirtualDesktopManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DesktopID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IVirtualDesktop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VDeskSwitcher.cpp">
@@ -54,6 +60,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VDM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DesktopID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
