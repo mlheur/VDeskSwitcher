@@ -255,6 +255,19 @@ BOOL FullScreenApp() {
 	return(IsFull);
 }
 
+BOOL MouseDown() {
+	BOOL isDown = FALSE;
+	int Buttons[] = {VK_LBUTTON, VK_RBUTTON, VK_MBUTTON, VK_XBUTTON1, VK_XBUTTON2};
+	SHORT State = 0;
+	int i = 0;
+	int last = sizeof(Buttons) / sizeof(int);
+	for (i = 0; i < last; i++) {
+		State = GetAsyncKeyState(Buttons[i]);
+		if(State & (0x1<<15)) isDown = TRUE;
+	}
+	return(isDown);
+}
+
 void CVDeskSwitcherDlg::OnTimer(UINT_PTR pTimer)
 {
 	POINT prevP = MousePos;
@@ -273,7 +286,7 @@ void CVDeskSwitcherDlg::OnTimer(UINT_PTR pTimer)
 		StartTimer(1000);
 		return;
 	}
-	
+
 	if (FirstHit > 0 && ThisHit < FirstHit + Delay) {
 		// Waiting for delay to be reached.
 		if ( (MousePos.x != Left && MousePos.x != Right) || (MousePos.x == Left && EdgeHit != Left) || (MousePos.x == Right && EdgeHit != Right) ) {
@@ -284,7 +297,7 @@ void CVDeskSwitcherDlg::OnTimer(UINT_PTR pTimer)
 //			MessageBox(_T("Waiting for time's up"));
 		}
 	}
-	else if (FirstHit > 0 && ThisHit >= FirstHit + Delay) {
+	else if (FirstHit > 0 && ThisHit >= FirstHit + Delay && !MouseDown()) {
 		if (MousePos.x == Left && prevP.x == MousePos.x && EdgeHit == Left) {
 //			MessageBox(_T("Repeated on left edge"));
 			ChangeDesktop(VK_LEFT);
@@ -349,7 +362,7 @@ void CVDeskSwitcherDlg::PrintDeskID(DWORD id) {
 }
 
 // http://www.cyberforum.ru/blogs/105416/blog3671.html
-void CVDeskSwitcherDlg::ChangeDesktop(DWORD VK) {
+void CVDeskSwitcherDlg::ChangeDesktop(DWORD Direction) {
 // Maybe move these to the class & their inits to OnInit so it can be used in many functions.  Still a good idea
 // to Enum them every so often if VDesks are added/removed after OnInit.
 	IServiceProvider* SP = NULL;
@@ -366,7 +379,7 @@ void CVDeskSwitcherDlg::ChangeDesktop(DWORD VK) {
 	if (!SUCCEEDED(SP->QueryService(__uuidof(IVirtualDesktopManager), &VDM))) return;
 	if (!SUCCEEDED(VDMi->GetCurrentDesktop(&D))) return;
 
-	switch (VK) {
+	switch (Direction) {
 		case VK_LEFT:
 			if (!SUCCEEDED(VDMi->GetAdjacentDesktop(D, AdjacentDesktop::LeftDirection, &nextD))) return;
 			break;
@@ -380,6 +393,7 @@ void CVDeskSwitcherDlg::ChangeDesktop(DWORD VK) {
 	VDMi->SwitchDesktop(nextD);
 	
 // The window doesn't pin when switched by keyboard, maybe move this to a fn and call that on timer too, or is that too heavy handed?
+	// TODO: fix this...
 	if (TRUE) { // if (PinToDesk) { // Identify doesn't work unless Pinned, not sure how this will change when hidden.
 		VDM->MoveWindowToDesktop( m_hWnd, nextGUID );
 		// CWnd *front = GetForegroundWindow();

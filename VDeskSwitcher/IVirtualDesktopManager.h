@@ -2,7 +2,8 @@
 EXTERN_C const IID IID_IVirtualDesktopManager;
 
 // For some reason this exists in VisualStudio if using the Release build, but not on the Debug build.
-#ifdef _DEBUG
+//#ifdef _DEBUG
+#if 0
 MIDL_INTERFACE("a5cd92ff-29be-454c-8d04-d82879fb3f1b")
 IVirtualDesktopManager : public IUnknown
 {
